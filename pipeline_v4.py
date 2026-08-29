@@ -103,7 +103,10 @@ class V4Validator(DeterministicValidator):
     def __init__(self, manufacturing, planner: MechanicalAwarePlanner, openscad: str | None = None):
         self.manufacturing = manufacturing
         self.planner = planner
-        self.assembly = AssemblyValidator(minimum_moving_clearance_mm=manufacturing.profile.xy_clearance_mm)
+        self.assembly = AssemblyValidator(
+            minimum_moving_clearance_mm=manufacturing.profile.xy_clearance_mm,
+            openscad=openscad,
+        )
         self.last_manufacturing = None
         self.last_assembly = None
         self.motion = MotionCollisionValidator(openscad=openscad, samples_per_joint=3, max_configurations=27)

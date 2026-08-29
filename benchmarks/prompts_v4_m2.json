@@ -7,5 +7,6 @@
   {"id":"06_hinge","difficulty":"mechanical_1dof","prompt":"Generate a two-part hinged mechanism demonstrator with one revolute joint from 0 to 110 degrees."},
   {"id":"07_slider","difficulty":"mechanical_1dof","prompt":"Generate a two-part slider mechanism demonstrator with one prismatic joint and 30 mm total travel."},
   {"id":"08_motion_repair","difficulty":"mechanical_collision_repair","prompt":"Generate a two-part motion-collision revolute demonstrator with 0 to 90 degree travel."},
-  {"id":"09_two_joint_arm","difficulty":"mechanical_2dof","prompt":"Generate a three-part two-joint serial revolute arm demonstrator with two independent revolute joints."}
+  {"id":"09_two_joint_arm","difficulty":"mechanical_2dof","prompt":"Generate a three-part two-joint serial revolute arm demonstrator with two independent revolute joints."},
+  {"id":"10_four_bar","difficulty":"mechanical_closed_loop","prompt":"Generate a four-bar linkage demonstrator with one driven crank."}
 ]

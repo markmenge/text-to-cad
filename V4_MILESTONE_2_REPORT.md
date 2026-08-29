@@ -132,6 +132,16 @@ The planner/generator prompts and repair routing were also updated with the new 
 5. Part-to-component mapping still uses declared origins and component centroids rather than explicit per-part source exports.
 6. Live-model qualification remains pending because this sandbox has no OpenAI API key.
 
+## Milestone 3 foundation
+
+The next milestone has started with two backward-compatible additions:
+
+- `PartIR` can declare an explicit `export_name` and `export_module` contract.
+- Contract-defined OpenSCAD modules are exported as named part STLs with a `parts_manifest.json` artifact.
+- Closed-loop IR metadata now supports a planar four-bar solver with one driver joint and constrained effective DOF.
+
+The first four-bar repair demonstrator passes with four named part exports, three driver configurations, and zero sampled mesh collisions. Existing V4 hinge, slider, motion-repair, and serial-chain tests continue to pass.
+
 ## Recommended Milestone 3
 
-The next mechanical milestone should focus on continuous/adaptive collision sampling, explicit per-part generation/export contracts, and a constrained closed-loop mechanism such as a four-bar or crank-slider. That would force the IR to represent dependent joint relationships instead of treating every moving joint as an independent DOF.
+The remaining Milestone 3 work should focus on migrating existing mechanical fixtures to explicit contracts, validating loop references and branch changes, improving continuous/adaptive collision sampling, and adding assembly configurations or exploded-view artifacts. Dynamics, loads, strength, torque, friction, and bearing/contact analysis remain outside scope.

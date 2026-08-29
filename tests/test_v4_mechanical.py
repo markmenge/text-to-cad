@@ -7,6 +7,7 @@ from pathlib import Path
 
 from assembly_validator import AssemblyValidator
 from mechanical_ir import JointIR, MechanicalSystemIR, PartIR, derive_mechanical_ir
+from pipeline_v2 import OpenSCADCompiler
 from pipeline_v4 import run_one_v4
 
 # pip install instructions:
@@ -29,6 +30,28 @@ class V4MechanicalTests(unittest.TestCase):
         self.assertTrue(ir.is_assembly)
         self.assertEqual(len(ir.parts), 2)
         self.assertEqual(ir.joints[0].type, "revolute")
+
+    def test_explicit_export_contract_writes_named_parts_and_manifest(self):
+        with tempfile.TemporaryDirectory() as td:
+            out = Path(td)
+            compiler = OpenSCADCompiler()
+            build = compiler.build(
+                "module base(){cube([10,10,2]);}\n"
+                "module arm(){translate([2,2,2]) cube([6,6,2]);}\n"
+                "base(); arm();\n",
+                out,
+            )
+            ir = MechanicalSystemIR(
+                parts=[
+                    PartIR("base", "base", grounded=True, export_name="base.stl", export_module="base"),
+                    PartIR("arm", "arm", export_name="arm.stl", export_module="arm"),
+                ],
+                joints=[],
+            )
+            result = AssemblyValidator(openscad=compiler.exe).validate_mesh(build.stl_path, ir, out / "parts")
+            self.assertTrue(result["pass"])
+            self.assertEqual({Path(path).name for path in result["exports"]}, {"base.stl", "arm.stl"})
+            self.assertTrue((out / "parts" / "parts_manifest.json").exists())
 
     def test_clearance_and_dof_are_deterministically_validated(self):
         ir = MechanicalSystemIR(

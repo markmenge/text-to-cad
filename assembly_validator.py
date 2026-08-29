@@ -1,7 +1,10 @@
 # Suggested filename: assembly_validator.py
 
+import json
 import math
+import os
 from pathlib import Path
+import subprocess
 
 import numpy as np
 import trimesh
@@ -21,8 +24,55 @@ def _norm(v):
 
 
 class AssemblyValidator:
-    def __init__(self, minimum_moving_clearance_mm: float = 0.25):
+    def __init__(self, minimum_moving_clearance_mm: float = 0.25, openscad: str | None = None):
         self.minimum_moving_clearance_mm = float(minimum_moving_clearance_mm)
+        self.openscad = openscad
+
+    @staticmethod
+    def _has_export_contract(ir: MechanicalSystemIR) -> bool:
+        return bool(ir.parts) and all(part.export_name and part.export_module for part in ir.parts)
+
+    def _export_contract_parts(self, scad_path: Path, ir: MechanicalSystemIR, export_dir: Path) -> dict:
+        if not self.openscad:
+            return {
+                "pass": False, "failures": ["Explicit part export contract requires an OpenSCAD executable"],
+                "failure_codes": ["EXPORT_CONTRACT_FAILURE"], "exports": [], "manifest": [],
+            }
+        export_dir.mkdir(parents=True, exist_ok=True)
+        exports = []
+        manifest = []
+        failures = []
+        for part in ir.parts:
+            target = export_dir / part.export_name
+            wrapper = export_dir / f".{part.id}_export.scad"
+            wrapper.write_text(
+                f'use <{scad_path.resolve().as_posix()}>;\n{part.export_module}();\n',
+                encoding="ascii",
+            )
+            result = subprocess.run(
+                [self.openscad, "-o", str(target), str(wrapper)],
+                capture_output=True, text=True,
+            )
+            entry = {
+                "part_id": part.id, "export_name": part.export_name,
+                "export_module": part.export_module, "path": str(target),
+                "returncode": result.returncode,
+            }
+            manifest.append(entry)
+            if result.returncode != 0 or not target.exists() or target.stat().st_size == 0:
+                failures.append(f"Explicit export failed for part {part.id}")
+            else:
+                mesh = trimesh.load_mesh(target, process=True)
+                if not mesh.is_watertight or abs(float(mesh.volume)) <= 0:
+                    failures.append(f"Explicit export for part {part.id} is not watertight and solid")
+                else:
+                    exports.append(str(target))
+        (export_dir / "parts_manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+        return {
+            "pass": not failures, "failures": failures,
+            "failure_codes": ["EXPORT_CONTRACT_FAILURE"] if failures else [],
+            "exports": exports, "manifest": manifest,
+        }
 
     def validate_ir(self, ir: MechanicalSystemIR | None) -> dict:
         if ir is None or not ir.is_assembly:
@@ -85,14 +135,18 @@ class AssemblyValidator:
                 failures.append(f"Joint graph is disconnected; reached {len(seen)}/{len(idset)} parts")
                 codes.append("ASSEMBLY_STRUCTURE_FAILURE")
 
-        if ir.expected_dof is not None and estimated_dof != ir.expected_dof:
-            failures.append(f"Expected {ir.expected_dof} DOF but joint graph defines {estimated_dof}")
+        effective_dof = estimated_dof
+        if ir.closed_loops:
+            moving_joints = sum(j.type in MOVING_JOINTS for j in ir.joints)
+            effective_dof = 3 * (len(ir.parts) - 1) - 2 * moving_joints
+        if ir.expected_dof is not None and effective_dof != ir.expected_dof:
+            failures.append(f"Expected {ir.expected_dof} DOF but joint graph defines {effective_dof}")
             codes.append("JOINT_CONSTRAINT_FAILURE")
         return {
             "pass": not failures,
             "failures": failures,
             "failure_codes": list(dict.fromkeys(codes)),
-            "estimated_dof": estimated_dof,
+            "estimated_dof": effective_dof,
             "part_count": len(ir.parts),
             "joint_count": len(ir.joints),
             "grounded_parts": grounded,
@@ -102,6 +156,15 @@ class AssemblyValidator:
         if ir is None or not ir.is_assembly:
             return {"pass": True, "failures": [], "failure_codes": [], "component_count": 1, "exports": []}
         mesh = trimesh.load_mesh(stl_path, process=True)
+        if export_dir is not None and self._has_export_contract(ir):
+            contract = self._export_contract_parts(Path(stl_path).with_suffix(".scad").resolve(), ir, Path(export_dir))
+            return {
+                "pass": contract["pass"], "failures": contract["failures"],
+                "failure_codes": contract["failure_codes"],
+                "component_count": len(mesh.split(only_watertight=False)),
+                "expected_component_count": len(ir.parts), "component_matches": [],
+                "exports": contract["exports"], "manifest": contract["manifest"],
+            }
         comps = list(mesh.split(only_watertight=False))
         failures = []
         codes = []

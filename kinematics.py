@@ -52,6 +52,9 @@ def motion_configurations(ir: MechanicalSystemIR | None, samples_per_joint: int 
     if ir is None:
         return []
     moving = [j for j in ir.joints if j.type in {"revolute", "prismatic"} and j.limits]
+    if ir.closed_loops:
+        drivers = {str(loop.get("input_joint")) for loop in ir.closed_loops if loop.get("input_joint")}
+        moving = [j for j in moving if j.id in drivers]
     if not moving:
         return [{"id": "nominal", "joint_values": {}}]
     sample_sets = []
@@ -82,6 +85,8 @@ def part_transforms(ir: MechanicalSystemIR | None, joint_values: dict[str, float
     if ir is None:
         return {}
     joint_values = joint_values or {}
+    if ir.closed_loops:
+        return _closed_loop_transforms(ir, joint_values)
     transforms = {p.id: np.eye(4) for p in ir.parts if p.grounded}
     unresolved = list(ir.joints)
     # Fixed and moving joints are both parent->child relationships.
@@ -100,6 +105,79 @@ def part_transforms(ir: MechanicalSystemIR | None, joint_values: dict[str, float
         unresolved = next_unresolved
         if not progress:
             break
+    for p in ir.parts:
+        transforms.setdefault(p.id, np.eye(4))
+    return transforms
+
+
+def _rigid_2d(angle: float, translation: np.ndarray) -> np.ndarray:
+    c, s = math.cos(angle), math.sin(angle)
+    T = np.eye(4)
+    T[:2, :2] = [[c, -s], [s, c]]
+    T[:2, 3] = translation[:2]
+    return T
+
+
+def _rotation_about(point: np.ndarray, angle: float) -> np.ndarray:
+    c, s = math.cos(angle), math.sin(angle)
+    rotation = np.array([[c, -s], [s, c]])
+    return _rigid_2d(angle, point - rotation @ point)
+
+
+def _circle_intersections(center_a: np.ndarray, radius_a: float, center_b: np.ndarray, radius_b: float, branch: int) -> tuple[np.ndarray, np.ndarray]:
+    delta = center_b - center_a
+    distance = float(np.linalg.norm(delta))
+    if distance == 0 or distance > radius_a + radius_b or distance < abs(radius_a - radius_b):
+        raise ValueError("Four-bar link lengths do not close for the requested input angle")
+    unit = delta / distance
+    along = (radius_a * radius_a - radius_b * radius_b + distance * distance) / (2 * distance)
+    height = math.sqrt(max(radius_a * radius_a - along * along, 0.0))
+    midpoint = center_a + along * unit
+    perpendicular = np.array([-unit[1], unit[0]])
+    first = midpoint + height * perpendicular
+    second = midpoint - height * perpendicular
+    return first, second
+
+
+def _closed_loop_transforms(ir: MechanicalSystemIR, joint_values: dict[str, float]) -> dict[str, np.ndarray]:
+    transforms = {p.id: np.eye(4) for p in ir.parts if p.grounded}
+    for loop in ir.closed_loops:
+        if loop.get("type") != "four_bar":
+            continue
+        names = loop.get("parts", {})
+        lengths = loop.get("link_lengths_mm", {})
+        pivots = np.array(loop.get("ground_pivots_mm", [[0, 0], [80, 0]]), dtype=float)
+        ground_a, ground_d = pivots[0], pivots[1]
+        input_joint = str(loop["input_joint"])
+        input_value = float(joint_values.get(input_joint, loop.get("nominal_input_deg", 0.0)))
+        crank_nominal = float(loop.get("nominal_input_deg", 0.0))
+        crank_length = float(lengths["crank"])
+        coupler_length = float(lengths["coupler"])
+        rocker_length = float(lengths["rocker"])
+        branch = 1 if int(loop.get("branch", 1)) >= 0 else -1
+
+        def solve(angle_deg: float) -> tuple[np.ndarray, np.ndarray]:
+            theta = math.radians(angle_deg)
+            crank_end = ground_a + crank_length * np.array([math.cos(theta), math.sin(theta)])
+            candidates = _circle_intersections(crank_end, coupler_length, ground_d, rocker_length, branch)
+            coupler_end = candidates[0] if branch >= 0 else candidates[1]
+            return crank_end, coupler_end
+
+        nominal_crank_end, nominal_coupler_end = solve(crank_nominal)
+        crank_end, coupler_end = solve(input_value)
+        nominal_crank_angle = math.atan2(*(nominal_crank_end - ground_a)[::-1])
+        current_crank_angle = math.atan2(*(crank_end - ground_a)[::-1])
+        transforms[names["crank"]] = _rotation_about(ground_a, current_crank_angle - nominal_crank_angle)
+
+        nominal_coupler_vector = nominal_coupler_end - nominal_crank_end
+        current_coupler_vector = coupler_end - crank_end
+        coupler_rotation = math.atan2(current_coupler_vector[1], current_coupler_vector[0]) - math.atan2(nominal_coupler_vector[1], nominal_coupler_vector[0])
+        transforms[names["coupler"]] = _rigid_2d(coupler_rotation, crank_end - _rigid_2d(coupler_rotation, np.zeros(2))[:2, :2] @ nominal_crank_end)
+
+        nominal_rocker_vector = nominal_coupler_end - ground_d
+        current_rocker_vector = coupler_end - ground_d
+        rocker_rotation = math.atan2(current_rocker_vector[1], current_rocker_vector[0]) - math.atan2(nominal_rocker_vector[1], nominal_rocker_vector[0])
+        transforms[names["rocker"]] = _rigid_2d(rocker_rotation, ground_d - _rigid_2d(rocker_rotation, np.zeros(2))[:2, :2] @ ground_d)
     for p in ir.parts:
         transforms.setdefault(p.id, np.eye(4))
     return transforms

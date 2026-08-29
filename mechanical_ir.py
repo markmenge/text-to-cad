@@ -13,6 +13,8 @@ class PartIR:
     origin_mm: list[float] = field(default_factory=lambda: [0.0, 0.0, 0.0])
     grounded: bool = False
     printable: bool = True
+    export_name: str | None = None
+    export_module: str | None = None
 
 
 @dataclass
@@ -33,6 +35,7 @@ class MechanicalSystemIR:
     joints: list[JointIR]
     expected_dof: int | None = None
     assembly_notes: list[str] = field(default_factory=list)
+    closed_loops: list[dict] = field(default_factory=list)
 
     def to_dict(self):
         return asdict(self)
@@ -54,6 +57,8 @@ def derive_mechanical_ir(planner_data: dict) -> MechanicalSystemIR | None:
             origin_mm=[float(v) for v in item.get("origin_mm", [0, 0, 0])],
             grounded=bool(item.get("grounded", False)),
             printable=bool(item.get("printable", True)),
+            export_name=str(item["export_name"]) if item.get("export_name") else None,
+            export_module=str(item["export_module"]) if item.get("export_module") else None,
         ))
     joints = []
     for i, item in enumerate(raw.get("joints", []), 1):
@@ -72,4 +77,5 @@ def derive_mechanical_ir(planner_data: dict) -> MechanicalSystemIR | None:
         joints=joints,
         expected_dof=int(raw["expected_dof"]) if raw.get("expected_dof") is not None else None,
         assembly_notes=[str(x) for x in raw.get("assembly_notes", [])],
+        closed_loops=[dict(loop) for loop in raw.get("closed_loops", []) if isinstance(loop, dict)],
     )

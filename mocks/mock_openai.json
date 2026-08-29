@@ -287,6 +287,46 @@
       "response": "{\"pass\":true,\"score\":90,\"feedback\":[]}"
     },
     {
+      "id": "plan_four_bar_demo",
+      "match": {
+        "role": "planner",
+        "prompt_contains": [
+          "four-bar",
+          "linkage"
+        ]
+      },
+      "response": "{\"object_type\":\"four_bar_demo\",\"strategies\":[\"multi_body_csg\",\"four_bar_linkage\"],\"dimensions_mm\":null,\"requirements\":[{\"id\":\"R1\",\"type\":\"mechanical\",\"text\":\"Four distinct printable links\"},{\"id\":\"R2\",\"type\":\"mechanical\",\"text\":\"Four-bar linkage has one driven input degree of freedom\"}],\"mechanical_system\":{\"parts\":[{\"id\":\"ground\",\"role\":\"ground link\",\"grounded\":true,\"export_name\":\"ground.stl\",\"export_module\":\"ground\"},{\"id\":\"crank\",\"role\":\"input crank\",\"origin_mm\":[0,0,4],\"export_name\":\"crank.stl\",\"export_module\":\"crank\"},{\"id\":\"coupler\",\"role\":\"coupler link\",\"origin_mm\":[21,21,8],\"export_name\":\"coupler.stl\",\"export_module\":\"coupler\"},{\"id\":\"rocker\",\"role\":\"output rocker\",\"origin_mm\":[80,0,12],\"export_name\":\"rocker.stl\",\"export_module\":\"rocker\"}],\"joints\":[{\"id\":\"j1\",\"type\":\"revolute\",\"parent\":\"ground\",\"child\":\"crank\",\"axis\":[0,0,1],\"origin_mm\":[0,0,4],\"limits\":[10,100],\"clearance_mm\":0.5},{\"id\":\"j2\",\"type\":\"revolute\",\"parent\":\"crank\",\"child\":\"coupler\",\"axis\":[0,0,1],\"origin_mm\":[30,0,4],\"limits\":[-180,180],\"clearance_mm\":0.5},{\"id\":\"j3\",\"type\":\"revolute\",\"parent\":\"coupler\",\"child\":\"rocker\",\"axis\":[0,0,1],\"origin_mm\":[0,0,8],\"limits\":[-180,180],\"clearance_mm\":0.5},{\"id\":\"j4\",\"type\":\"revolute\",\"parent\":\"rocker\",\"child\":\"ground\",\"axis\":[0,0,1],\"origin_mm\":[80,0,12],\"limits\":[-180,180],\"clearance_mm\":0.5}],\"expected_dof\":1,\"closed_loops\":[{\"type\":\"four_bar\",\"parts\":{\"crank\":\"crank\",\"coupler\":\"coupler\",\"rocker\":\"rocker\"},\"link_lengths_mm\":{\"crank\":30,\"coupler\":55,\"rocker\":55},\"ground_pivots_mm\":[[0,0],[80,0]],\"input_joint\":\"j1\",\"nominal_input_deg\":45,\"branch\":1}],\"assembly_notes\":[\"The crank drives the closed loop; coupler and rocker poses are solved from link lengths\"]}}"
+    },
+    {
+      "id": "gen_four_bar_demo_bad",
+      "match": {
+        "role": "generator",
+        "object_type": "four_bar_demo",
+        "iteration_max": 1
+      },
+      "response": "cube([90,20,8]);\n"
+    },
+    {
+      "id": "gen_four_bar_demo_repair",
+      "match": {
+        "role": "generator",
+        "object_type": "four_bar_demo",
+        "iteration_min": 2,
+        "feedback_contains": [
+          "Explicit export failed"
+        ]
+      },
+      "response": "$fn=32;\nmodule bar(x1,y1,x2,y2,z){hull(){translate([x1,y1,z]) cylinder(h=3,r=3); translate([x2,y2,z]) cylinder(h=3,r=3);}}\nmodule ground(){translate([-8,-8,0]) cube([96,16,3]);}\nmodule crank(){bar(0,0,21.2,21.2,4);}\nmodule coupler(){bar(21.2,21.2,67,38,8);}\nmodule rocker(){bar(80,0,67,38,12);}\nground(); crank(); coupler(); rocker();\n"
+    },
+    {
+      "id": "critic_four_bar_demo",
+      "match": {
+        "role": "critic",
+        "object_type": "four_bar_demo"
+      },
+      "response": "{\"pass\":true,\"score\":93,\"feedback\":[]}"
+    },
+    {
       "id": "critic_default_pass",
       "match": {
         "role": "critic"
