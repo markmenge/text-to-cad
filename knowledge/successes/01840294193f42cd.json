@@ -1,0 +1,69 @@
+{
+  "id": "01840294193f42cd",
+  "prompt": "Generate a 6 cm by 2 cm by 2 mm key ring name tag that says Pepper with font size 10. Round the corners, and place a 2 mm hole 2 mm from the upper left.",
+  "object_type": "name_tag",
+  "primary_strategy": "2d_extrusion",
+  "secondary_strategies": [
+    "boolean",
+    "text"
+  ],
+  "subsystems": [
+    "tag_body",
+    "text",
+    "keyring_hole"
+  ],
+  "final_metrics": {
+    "stl_rc": 0,
+    "render_count": 4,
+    "watertight": true,
+    "components": 1,
+    "faces": 3616,
+    "vertices": 1808,
+    "volume_mm3": 2293.976,
+    "bbox_mm": [
+      60.0,
+      20.0,
+      2.0
+    ],
+    "z_min_mm": 0.0,
+    "z_max_mm": 2.0,
+    "dimension_error_mm": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "render_stddev": [
+      27.011,
+      13.827,
+      8.492,
+      39.914
+    ],
+    "manufacturing": {
+      "pass": true,
+      "profile": {
+        "name": "generic_fdm_0p4",
+        "process": "FDM",
+        "nozzle_mm": 0.4,
+        "layer_height_mm": 0.2,
+        "min_wall_mm": 0.8,
+        "min_feature_mm": 0.4,
+        "build_volume_mm": [
+          256.0,
+          256.0,
+          256.0
+        ]
+      },
+      "failures": [],
+      "slicer_available": false,
+      "slicer_executable": null,
+      "scope": "manufacturing envelope only; wall-thickness/support validation requires a slicer or dedicated geometry analysis"
+    }
+  },
+  "iterations": 1,
+  "retrieved_patterns": [
+    "/mnt/data/text_to_cad_v3/research/modeling_strategies.md",
+    "/mnt/data/text_to_cad_v3/knowledge/successes/7ec06913050bb5e1.md",
+    "/mnt/data/text_to_cad_v3/knowledge/successes/bb5af76035b10af1.md"
+  ],
+  "pipeline_version": "3.0.0-dev1"
+}

@@ -1,0 +1,66 @@
+{
+  "id": "6044874acb9f7bda",
+  "prompt": "Generate a F-16 model.",
+  "object_type": "f16",
+  "primary_strategy": "hull_loft",
+  "secondary_strategies": [
+    "symmetry",
+    "compound_subsystems"
+  ],
+  "subsystems": [
+    "fuselage",
+    "nose",
+    "wings",
+    "tail",
+    "vertical_stabilizer"
+  ],
+  "final_metrics": {
+    "stl_rc": 0,
+    "render_count": 4,
+    "watertight": true,
+    "components": 1,
+    "faces": 3956,
+    "vertices": 1980,
+    "volume_mm3": 15237.79,
+    "bbox_mm": [
+      111.981,
+      68.0,
+      33.978
+    ],
+    "z_min_mm": 3.022,
+    "z_max_mm": 37.0,
+    "render_stddev": [
+      25.016,
+      27.873,
+      14.722,
+      31.671
+    ],
+    "manufacturing": {
+      "pass": true,
+      "profile": {
+        "name": "generic_fdm_0p4",
+        "process": "FDM",
+        "nozzle_mm": 0.4,
+        "layer_height_mm": 0.2,
+        "min_wall_mm": 0.8,
+        "min_feature_mm": 0.4,
+        "build_volume_mm": [
+          256.0,
+          256.0,
+          256.0
+        ]
+      },
+      "failures": [],
+      "slicer_available": false,
+      "slicer_executable": null,
+      "scope": "manufacturing envelope only; wall-thickness/support validation requires a slicer or dedicated geometry analysis"
+    }
+  },
+  "iterations": 2,
+  "retrieved_patterns": [
+    "/mnt/data/text_to_cad_v3/corpus/patterns/aircraft.md",
+    "/mnt/data/text_to_cad_v3/knowledge/successes/bb5af76035b10af1.md",
+    "/mnt/data/text_to_cad_v3/knowledge/successes/da53c1fe8ad45454.md"
+  ],
+  "pipeline_version": "3.0.0-dev1"
+}

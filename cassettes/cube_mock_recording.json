@@ -1,0 +1,147 @@
+{
+  "prompt_hashes": {
+    "text-to-cad.md": "be3034a48e19f74b",
+    "planner.md": "2c7aa48cfaa5f20c",
+    "generator.md": "3a25258222e66217",
+    "critic.md": "920282c103e36ed0"
+  },
+  "calls": [
+    {
+      "request_key": "29caf9a6c27ceeca6645988984d1395f2926879a98e40e6920df9f0d76e45a24",
+      "role": "planner",
+      "request": {
+        "role": "planner",
+        "prompt": "Generate a 2 cm by 2 cm by 2 cm cube.",
+        "context": {}
+      },
+      "response_text": "{\"object_type\":\"cube\",\"strategies\":[\"primitive_csg\"],\"dimensions_mm\":[20,20,20],\"requirements\":[\"exact dimensions\"]}",
+      "fixture_id": "plan_cube",
+      "metadata": {
+        "mode": "mock"
+      }
+    },
+    {
+      "request_key": "a195bacc28753cd6af325ef6363bd951aaf0b7a7dc52b39c3aa504ed92164a70",
+      "role": "generator",
+      "request": {
+        "role": "generator",
+        "prompt": "Generate a 2 cm by 2 cm by 2 cm cube.",
+        "context": {
+          "object_type": "cube",
+          "strategies": [
+            "primitive_csg"
+          ],
+          "dimensions_mm": [
+            20,
+            20,
+            20
+          ],
+          "requirements": [
+            {
+              "id": "R1",
+              "type": "dimension",
+              "text": "exact dimensions"
+            },
+            {
+              "id": "R2",
+              "type": "manufacturing",
+              "text": "One connected printable object"
+            }
+          ],
+          "feedback": [],
+          "failure_codes": [],
+          "repair_route": "initial_generation",
+          "iteration": 1
+        }
+      },
+      "response_text": "cube([20,20,20]);\n",
+      "fixture_id": "gen_cube",
+      "metadata": {
+        "mode": "mock"
+      }
+    },
+    {
+      "request_key": "da50760c77c432cb1fea433afcd9ed9d6acb4ebeae1bfbf5ae43124834d6d0b6",
+      "role": "critic",
+      "request": {
+        "role": "critic",
+        "prompt": "Generate a 2 cm by 2 cm by 2 cm cube.",
+        "context": {
+          "object_type": "cube",
+          "strategies": [
+            "primitive_csg"
+          ],
+          "requirements": [
+            {
+              "id": "R1",
+              "type": "dimension",
+              "text": "exact dimensions"
+            },
+            {
+              "id": "R2",
+              "type": "manufacturing",
+              "text": "One connected printable object"
+            }
+          ],
+          "requirement_results": [
+            {
+              "id": "R1",
+              "type": "dimension",
+              "text": "exact dimensions",
+              "status": "PASS",
+              "evidence": "Overall STL bounding-box validation"
+            },
+            {
+              "id": "R2",
+              "type": "manufacturing",
+              "text": "One connected printable object",
+              "status": "PASS",
+              "evidence": "Mesh connected-component validation"
+            }
+          ],
+          "iteration": 1,
+          "feedback": [],
+          "metrics": {
+            "stl_rc": 0,
+            "render_count": 4,
+            "watertight": true,
+            "components": 1,
+            "faces": 12,
+            "vertices": 8,
+            "volume_mm3": 8000.0,
+            "bbox_mm": [
+              20.0,
+              20.0,
+              20.0
+            ],
+            "z_min_mm": 0.0,
+            "z_max_mm": 20.0,
+            "dimension_error_mm": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "render_stddev": [
+              56.362,
+              40.196,
+              40.196,
+              40.196
+            ]
+          },
+          "scad_excerpt": "cube([20,20,20]);\n",
+          "image_paths": [
+            "/mnt/data/text_to_cad_project/runs/benchmark_mock/01_cube/iteration_01/view_perspective.png",
+            "/mnt/data/text_to_cad_project/runs/benchmark_mock/01_cube/iteration_01/view_front.png",
+            "/mnt/data/text_to_cad_project/runs/benchmark_mock/01_cube/iteration_01/view_side.png",
+            "/mnt/data/text_to_cad_project/runs/benchmark_mock/01_cube/iteration_01/view_top.png"
+          ]
+        }
+      },
+      "response_text": "{\"pass\":true,\"score\":95,\"feedback\":[]}",
+      "fixture_id": "critic_default_pass",
+      "metadata": {
+        "mode": "mock"
+      }
+    }
+  ]
+}

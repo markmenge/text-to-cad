@@ -1,0 +1,107 @@
+{
+  "id": "bdf10a56b2f4b68e",
+  "prompt": "Generate a two-part slider mechanism demonstrator with one prismatic joint and 30 mm total travel.",
+  "object_type": "slider_demo",
+  "primary_strategy": "multi_body_csg",
+  "secondary_strategies": [
+    "prismatic_joint"
+  ],
+  "subsystems": [
+    "body"
+  ],
+  "final_metrics": {
+    "stl_rc": 0,
+    "render_count": 4,
+    "watertight": true,
+    "components": 2,
+    "faces": 40,
+    "vertices": 24,
+    "volume_mm3": 8200.0,
+    "bbox_mm": [
+      60.0,
+      24.0,
+      10.0
+    ],
+    "z_min_mm": 0.0,
+    "z_max_mm": 10.0,
+    "render_stddev": [
+      45.687,
+      28.555,
+      16.366,
+      40.253
+    ],
+    "manufacturing": {
+      "pass": true,
+      "profile": {
+        "name": "generic_fdm_0p4",
+        "process": "FDM",
+        "nozzle_mm": 0.4,
+        "layer_height_mm": 0.2,
+        "min_wall_mm": 0.8,
+        "min_feature_mm": 0.4,
+        "xy_clearance_mm": 0.3,
+        "build_volume_mm": [
+          256.0,
+          256.0,
+          256.0
+        ]
+      },
+      "failures": [],
+      "slicer_available": false,
+      "slicer_executable": null,
+      "scope": "manufacturing envelope only; wall-thickness/support validation requires a slicer or dedicated geometry analysis"
+    },
+    "assembly": {
+      "ir": {
+        "pass": true,
+        "failures": [],
+        "failure_codes": [],
+        "estimated_dof": 1,
+        "part_count": 2,
+        "joint_count": 1,
+        "grounded_parts": [
+          "guide"
+        ]
+      },
+      "mesh": {
+        "pass": true,
+        "failures": [],
+        "failure_codes": [],
+        "component_count": 2,
+        "expected_component_count": 2,
+        "component_matches": [
+          {
+            "part_id": "guide",
+            "component_index": 0,
+            "centroid_mm": [
+              0.0,
+              0.0,
+              3.703
+            ],
+            "origin_distance_mm": 0.797
+          },
+          {
+            "part_id": "slider",
+            "component_index": 1,
+            "centroid_mm": [
+              0.0,
+              0.0,
+              6.0
+            ],
+            "origin_distance_mm": 0.0
+          }
+        ],
+        "exports": [
+          "/tmp/tmp81n0i_23/iteration_02/parts/guide.stl",
+          "/tmp/tmp81n0i_23/iteration_02/parts/slider.stl"
+        ]
+      }
+    }
+  },
+  "iterations": 2,
+  "retrieved_patterns": [
+    "/mnt/data/text_to_cad_v4/corpus/patterns/mechanical_slider.md",
+    "/mnt/data/text_to_cad_v4/knowledge/successes/43fd11c341509433.md"
+  ],
+  "pipeline_version": "4.0.0-dev1"
+}

@@ -1,0 +1,183 @@
+{
+  "id": "b2ed6b5e18b1eb82",
+  "prompt": "Generate a two-part motion-collision revolute demonstrator with 0 to 90 degree travel.",
+  "object_type": "motion_collision_demo",
+  "primary_strategy": "multi_body_csg",
+  "secondary_strategies": [
+    "revolute_joint"
+  ],
+  "subsystems": [
+    "body"
+  ],
+  "final_metrics": {
+    "stl_rc": 0,
+    "render_count": 4,
+    "watertight": true,
+    "components": 2,
+    "faces": 24,
+    "vertices": 16,
+    "volume_mm3": 2480.0,
+    "bbox_mm": [
+      40.0,
+      20.0,
+      11.0
+    ],
+    "z_min_mm": 0.0,
+    "z_max_mm": 11.0,
+    "render_stddev": [
+      32.545,
+      21.395,
+      18.416,
+      36.977
+    ],
+    "manufacturing": {
+      "pass": true,
+      "profile": {
+        "name": "generic_fdm_0p4",
+        "process": "FDM",
+        "nozzle_mm": 0.4,
+        "layer_height_mm": 0.2,
+        "min_wall_mm": 0.8,
+        "min_feature_mm": 0.4,
+        "xy_clearance_mm": 0.3,
+        "build_volume_mm": [
+          256.0,
+          256.0,
+          256.0
+        ]
+      },
+      "failures": [],
+      "slicer_available": false,
+      "slicer_executable": null,
+      "scope": "manufacturing envelope only; wall-thickness/support validation requires a slicer or dedicated geometry analysis"
+    },
+    "assembly": {
+      "ir": {
+        "pass": true,
+        "failures": [],
+        "failure_codes": [],
+        "estimated_dof": 1,
+        "part_count": 2,
+        "joint_count": 1,
+        "grounded_parts": [
+          "base"
+        ]
+      },
+      "mesh": {
+        "pass": true,
+        "failures": [],
+        "failure_codes": [],
+        "component_count": 2,
+        "expected_component_count": 2,
+        "component_matches": [
+          {
+            "part_id": "base",
+            "component_index": 0,
+            "centroid_mm": [
+              0.0,
+              0.0,
+              2.5
+            ],
+            "origin_distance_mm": 0.0
+          },
+          {
+            "part_id": "arm",
+            "component_index": 1,
+            "centroid_mm": [
+              -15.0,
+              0.0,
+              10.0
+            ],
+            "origin_distance_mm": 15.0
+          }
+        ],
+        "exports": [
+          "/tmp/tmpww__0mei/iteration_02/parts/base.stl",
+          "/tmp/tmpww__0mei/iteration_02/parts/arm.stl"
+        ]
+      }
+    },
+    "motion_validation": {
+      "pass": true,
+      "failure_codes": [],
+      "failures": [],
+      "sample_count": 3,
+      "collision_count": 0,
+      "minimum_pair_clearance_mm": {
+        "base|arm": 4.0
+      },
+      "configurations": [
+        {
+          "configuration_id": "cfg_000",
+          "joint_values": {
+            "J1": 0.0
+          },
+          "pairs": [
+            {
+              "parts": [
+                "base",
+                "arm"
+              ],
+              "collision": false,
+              "approx_clearance_mm": 4.0,
+              "required_clearance_mm": 0.5,
+              "clearance_fail": false,
+              "exact": {
+                "skipped_by_aabb": true
+              }
+            }
+          ]
+        },
+        {
+          "configuration_id": "cfg_001",
+          "joint_values": {
+            "J1": 45.0
+          },
+          "pairs": [
+            {
+              "parts": [
+                "base",
+                "arm"
+              ],
+              "collision": false,
+              "approx_clearance_mm": 4.2929,
+              "required_clearance_mm": 0.5,
+              "clearance_fail": false,
+              "exact": {
+                "skipped_by_aabb": true
+              }
+            }
+          ]
+        },
+        {
+          "configuration_id": "cfg_002",
+          "joint_values": {
+            "J1": 90.0
+          },
+          "pairs": [
+            {
+              "parts": [
+                "base",
+                "arm"
+              ],
+              "collision": false,
+              "approx_clearance_mm": 5.0,
+              "required_clearance_mm": 0.5,
+              "clearance_fail": false,
+              "exact": {
+                "skipped_by_aabb": true
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "iterations": 2,
+  "retrieved_patterns": [
+    "/mnt/data/text_to_cad_v4/knowledge/successes/1995a676540c9e72.md",
+    "/mnt/data/text_to_cad_v4/knowledge/successes/53b121d100779995.md",
+    "/mnt/data/text_to_cad_v4/knowledge/successes/8a76e1603dbf2180.md"
+  ],
+  "pipeline_version": "4.1.0-dev2"
+}

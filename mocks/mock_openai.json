@@ -1,0 +1,350 @@
+{
+  "version": 2,
+  "description": "Offline contextual fixtures for V4 shape and mechanical-system development.",
+  "defaults": {
+    "planner": "{\"object_type\":\"generic\",\"strategies\":[\"primitive_csg\"],\"dimensions_mm\":null,\"requirements\":[\"FDM printable\"]}",
+    "critic": "{\"pass\":true,\"score\":80,\"feedback\":[]}",
+    "generator": "cube([20,20,20]);\n"
+  },
+  "rules": [
+    {
+      "id": "plan_cube",
+      "match": {
+        "role": "planner",
+        "prompt_contains": [
+          "cube"
+        ]
+      },
+      "response": "{\"object_type\":\"cube\",\"strategies\":[\"primitive_csg\"],\"dimensions_mm\":[20,20,20],\"requirements\":[\"exact dimensions\"]}"
+    },
+    {
+      "id": "plan_name_tag",
+      "match": {
+        "role": "planner",
+        "prompt_contains": [
+          "name tag",
+          "Pepper"
+        ]
+      },
+      "response": "{\"object_type\":\"name_tag\",\"strategies\":[\"2d_extrusion\",\"boolean\",\"text\"],\"dimensions_mm\":[60,20,2],\"requirements\":[\"Pepper text\",\"rounded corners\",\"2 mm hole\"]}"
+    },
+    {
+      "id": "plan_frog_teacup",
+      "match": {
+        "role": "planner",
+        "prompt_contains": [
+          "frog",
+          "cup"
+        ]
+      },
+      "response": "{\"object_type\":\"frog_teacup\",\"strategies\":[\"shell\",\"organic_hull\"],\"dimensions_mm\":null,\"requirements\":[\"one connected printable object\"]}"
+    },
+    {
+      "id": "plan_bishop",
+      "match": {
+        "role": "planner",
+        "prompt_contains": [
+          "bishop"
+        ]
+      },
+      "response": "{\"object_type\":\"bishop\",\"strategies\":[\"revolve\",\"boolean\"],\"dimensions_mm\":null,\"requirements\":[\"diagonal mitre slot\"]}"
+    },
+    {
+      "id": "plan_f16",
+      "match": {
+        "role": "planner",
+        "prompt_contains": [
+          "f-16"
+        ]
+      },
+      "response": "{\"object_type\":\"f16\",\"strategies\":[\"hull_loft\",\"symmetry\",\"compound_subsystems\"],\"dimensions_mm\":null,\"requirements\":[\"recognizable silhouette\",\"one connected display model\"]}"
+    },
+    {
+      "id": "gen_cube",
+      "match": {
+        "role": "generator",
+        "object_type": "cube"
+      },
+      "response": "cube([20,20,20]);\n"
+    },
+    {
+      "id": "gen_name_tag",
+      "match": {
+        "role": "generator",
+        "object_type": "name_tag"
+      },
+      "response": "$fn=64;\nw=60; h=20; t=2; r=3; hole_d=2; font_size=10;\nmodule rr() { hull() { for (x=[r,w-r], y=[r,h-r]) translate([x,y]) circle(r=r); } }\ndifference() {\n  linear_extrude(height=t) rr();\n  translate([2,h-2,-0.5]) cylinder(h=t+1,d=hole_d);\n  translate([w/2,h/2,t-0.6]) linear_extrude(height=0.7) text(\"Pepper\",size=font_size,halign=\"center\",valign=\"center\");\n}\n"
+    },
+    {
+      "id": "gen_frog_teacup_bad",
+      "match": {
+        "role": "generator",
+        "object_type": "frog_teacup",
+        "iteration_max": 1
+      },
+      "response": "$fn=48;\nouter_r=28; cup_h=40; wall=0.8; bottom=1.0;\nmodule cup(){ difference(){ cylinder(h=cup_h,r=outer_r); translate([0,0,bottom]) cylinder(h=cup_h+1,r=outer_r-wall); } }\nmodule frog(){ union(){ translate([0,0,39]) scale([12,9,8]) sphere(r=1); translate([0,0,49]) scale([9,8,7]) sphere(r=1); hull(){ translate([0,8,40]) sphere(r=3); translate([0,26,39]) sphere(r=3); } } }\nunion(){ cup(); frog(); }\n"
+    },
+    {
+      "id": "gen_frog_teacup_repair",
+      "match": {
+        "role": "generator",
+        "object_type": "frog_teacup",
+        "iteration_min": 2,
+        "feedback_contains": [
+          "wall"
+        ]
+      },
+      "response": "$fn=64;\ncup_h=40; outer_r=28; wall=2.6; bottom=4;\nmodule cup(){ union(){ difference(){ cylinder(h=cup_h,r=outer_r); translate([0,0,bottom]) cylinder(h=cup_h+1,r=outer_r-wall); } translate([outer_r-1,0,22]) rotate([90,0,0]) difference(){ cylinder(h=7,r=17,center=true); cylinder(h=9,r=11,center=true); } } }\nmodule e(s=[1,1,1]){ scale(s) sphere(r=1); }\nmodule frog(){ union(){ translate([0,0,38]) e([12,9,8]); translate([0,0,48]) e([9,8,7]); for(s=[-1,1]){ translate([s*5,2,54]) sphere(r=3.2); hull(){ translate([s*8,0,40]) sphere(r=3.5); translate([s*13,-1,36]) sphere(r=4); } } } }\nunion(){ cup(); frog(); }\n"
+    },
+    {
+      "id": "gen_bishop",
+      "match": {
+        "role": "generator",
+        "object_type": "bishop"
+      },
+      "response": "$fn=96;\nmodule body(){ rotate_extrude(convexity=10) polygon(points=[[0,0],[20,0],[22,3],[22,6],[18,9],[15,11],[12,17],[10,30],[12,40],[9,48],[7,55],[0,58]]); }\ndifference(){ union(){ body(); translate([0,0,61]) sphere(r=10); } translate([-2,-15,57]) rotate([0,28,0]) cube([5,30,18]); }\n"
+    },
+    {
+      "id": "gen_f16_bad",
+      "match": {
+        "role": "generator",
+        "object_type": "f16",
+        "iteration_max": 1
+      },
+      "response": "$fn=32;\nmodule e(p=[0,0,0],s=[1,1,1]){ translate(p) scale(s) sphere(r=1); }\nmodule fuselage(){ hull(){e([-48,0,10],[4,4,4]);e([-28,0,10],[12,6,6]);} hull(){e([-28,0,10],[12,6,6]);e([5,0,10],[24,7,7]);} hull(){e([5,0,10],[24,7,7]);e([42,0,10],[10,4,4]);} }\nmodule wing(s=1){ translate([0,0,0]) linear_extrude(height=2) polygon(points=[[-20,0],[-5,s*4],[14,s*34],[25,s*28],[18,s*5]]); }\nunion(){fuselage();wing(1);wing(-1);}\n"
+    },
+    {
+      "id": "gen_f16_repair",
+      "match": {
+        "role": "generator",
+        "object_type": "f16",
+        "iteration_min": 2,
+        "feedback_contains": [
+          "components"
+        ]
+      },
+      "response": "$fn=40;\nmodule e(p=[0,0,0],s=[1,1,1]){ translate(p) scale(s) sphere(r=1); }\nmodule fuselage(){ hull(){e([-48,0,10],[4,4,4]);e([-28,0,10],[12,6,6]);} hull(){e([-28,0,10],[12,6,6]);e([5,0,10],[24,7,7]);} hull(){e([5,0,10],[24,7,7]);e([42,0,10],[10,4,4]);} hull(){e([42,0,10],[10,4,4]);e([58,0,10],[2,2,2]);} }\nmodule wing(s=1){ translate([0,0,9]) linear_extrude(height=3) polygon(points=[[-20,0],[-5,s*4],[14,s*34],[25,s*28],[18,s*5]]); }\nmodule htail(s=1){ translate([30,0,9]) linear_extrude(height=3) polygon(points=[[-8,0],[0,s*3],[15,s*17],[20,s*12],[14,s*3]]); }\nmodule vtail(){ hull(){translate([25,-2,13]) cube([16,4,3]);translate([34,-2,34]) cube([5,4,3]);} }\nmodule canopy(){ hull(){e([-12,0,16],[9,4,3]);e([5,0,16],[8,4,3]);} }\nunion(){fuselage();wing(1);wing(-1);htail(1);htail(-1);vtail();canopy();}\n"
+    },
+    {
+      "id": "plan_hinged_demo",
+      "match": {
+        "role": "planner",
+        "prompt_contains": [
+          "hinged",
+          "revolute"
+        ]
+      },
+      "response": "{\"object_type\":\"hinged_demo\",\"strategies\":[\"multi_body_csg\",\"revolute_joint\"],\"dimensions_mm\":null,\"requirements\":[{\"id\":\"R1\",\"type\":\"mechanical\",\"text\":\"Two distinct printable parts\"},{\"id\":\"R2\",\"type\":\"mechanical\",\"text\":\"One revolute joint with 0 to 110 degree travel\"}],\"mechanical_system\":{\"parts\":[{\"id\":\"base\",\"role\":\"grounded base\",\"origin_mm\":[0,0,5],\"grounded\":true},{\"id\":\"lid\",\"role\":\"rotating lid\",\"origin_mm\":[0,0,12],\"grounded\":false}],\"joints\":[{\"id\":\"J1\",\"type\":\"revolute\",\"parent\":\"base\",\"child\":\"lid\",\"axis\":[-1,0,0],\"origin_mm\":[0,14,9],\"limits\":[0,110],\"clearance_mm\":0.4}],\"expected_dof\":1,\"assembly_notes\":[\"lid rotates away from base about the modeled axle center at y=14,z=9\"]}}"
+    },
+    {
+      "id": "gen_hinged_demo_bad",
+      "match": {
+        "role": "generator",
+        "object_type": "hinged_demo",
+        "iteration_max": 1
+      },
+      "response": "$fn=48;\nmodule base(){ translate([-20,-15,0]) cube([40,30,10]); }\nmodule lid(){ translate([-20,-15,9.5]) cube([40,30,3]); }\nbase(); lid();\n"
+    },
+    {
+      "id": "gen_hinged_demo_repair",
+      "match": {
+        "role": "generator",
+        "object_type": "hinged_demo",
+        "iteration_min": 2,
+        "feedback_contains": [
+          "Expected 2 distinct assembly parts"
+        ]
+      },
+      "response": "$fn=64;\nmodule base(){ union(){ translate([-20,-15,0]) cube([40,23,8]); translate([-20,7,5]) cube([4,8,5]); translate([16,7,5]) cube([4,8,5]); translate([-18,14,9]) rotate([0,90,0]) cylinder(h=36,r=2.5); } }\nmodule lid(){ union(){ translate([-20,-15,12.5]) cube([40,24,3]); translate([-14,8.5,12.5]) cube([28,5.5,2]); difference(){ translate([-14,14,9]) rotate([0,90,0]) cylinder(h=28,r=4); translate([-15,14,9]) rotate([0,90,0]) cylinder(h=30,r=3); } } }\nbase(); lid();\n"
+    },
+    {
+      "id": "critic_hinged_demo",
+      "match": {
+        "role": "critic",
+        "object_type": "hinged_demo"
+      },
+      "response": "{\"pass\":true,\"score\":92,\"feedback\":[]}"
+    },
+    {
+      "id": "plan_slider_demo",
+      "match": {
+        "role": "planner",
+        "prompt_contains": [
+          "slider",
+          "prismatic"
+        ]
+      },
+      "response": "{\"object_type\":\"slider_demo\",\"strategies\":[\"multi_body_csg\",\"prismatic_joint\"],\"dimensions_mm\":null,\"requirements\":[{\"id\":\"R1\",\"type\":\"mechanical\",\"text\":\"Separate guide and slider\"},{\"id\":\"R2\",\"type\":\"mechanical\",\"text\":\"One prismatic joint with 30 mm total travel\"}],\"mechanical_system\":{\"parts\":[{\"id\":\"guide\",\"role\":\"grounded guide\",\"origin_mm\":[0,0,4.5],\"grounded\":true},{\"id\":\"slider\",\"role\":\"moving carriage\",\"origin_mm\":[0,0,6],\"grounded\":false}],\"joints\":[{\"id\":\"J1\",\"type\":\"prismatic\",\"parent\":\"guide\",\"child\":\"slider\",\"axis\":[1,0,0],\"origin_mm\":[0,0,0],\"limits\":[-15,15],\"clearance_mm\":0.5}],\"expected_dof\":1,\"assembly_notes\":[\"slider translates along X inside guide\"]}}"
+    },
+    {
+      "id": "gen_slider_demo_bad",
+      "match": {
+        "role": "generator",
+        "object_type": "slider_demo",
+        "iteration_max": 1
+      },
+      "response": "module guide(){ union(){ translate([-30,-12,0]) cube([60,24,3]); translate([-30,-12,3]) cube([60,4,7]); translate([-30,8,3]) cube([60,4,7]); } }\nmodule slider(){ translate([-10,-9,4]) cube([20,18,4]); }\nguide(); slider();\n"
+    },
+    {
+      "id": "gen_slider_demo_repair",
+      "match": {
+        "role": "generator",
+        "object_type": "slider_demo",
+        "iteration_min": 2,
+        "feedback_contains": [
+          "Expected 2 distinct assembly parts"
+        ]
+      },
+      "response": "module guide(){ union(){ translate([-30,-12,0]) cube([60,24,3]); translate([-30,-12,3]) cube([60,3,7]); translate([-30,9,3]) cube([60,3,7]); } }\nmodule slider(){ translate([-10,-8.5,4]) cube([20,17,4]); }\nguide(); slider();\n"
+    },
+    {
+      "id": "critic_slider_demo",
+      "match": {
+        "role": "critic",
+        "object_type": "slider_demo"
+      },
+      "response": "{\"pass\":true,\"score\":94,\"feedback\":[]}"
+    },
+    {
+      "id": "plan_two_joint_arm",
+      "match": {
+        "role": "planner",
+        "prompt_contains": [
+          "two-joint",
+          "serial",
+          "revolute"
+        ]
+      },
+      "response": "{\"object_type\":\"two_joint_arm_demo\",\"strategies\":[\"multi_body_csg\",\"serial_revolute_joints\"],\"dimensions_mm\":null,\"requirements\":[{\"id\":\"R1\",\"type\":\"mechanical\",\"text\":\"Three distinct printable parts: base, arm1, arm2\"},{\"id\":\"R2\",\"type\":\"mechanical\",\"text\":\"Two serial revolute joints with independent motion\"}],\"mechanical_system\":{\"parts\":[{\"id\":\"base\",\"role\":\"grounded base\",\"origin_mm\":[0,0,3],\"grounded\":true},{\"id\":\"arm1\",\"role\":\"first rotating link\",\"origin_mm\":[15,0,7]},{\"id\":\"arm2\",\"role\":\"second rotating link\",\"origin_mm\":[45,0,11.5]}],\"joints\":[{\"id\":\"J1\",\"type\":\"revolute\",\"parent\":\"base\",\"child\":\"arm1\",\"axis\":[0,0,1],\"origin_mm\":[0,0,6.5],\"limits\":[-45,45],\"clearance_mm\":0.5},{\"id\":\"J2\",\"type\":\"revolute\",\"parent\":\"arm1\",\"child\":\"arm2\",\"axis\":[0,0,1],\"origin_mm\":[30,0,11.5],\"limits\":[-90,90],\"clearance_mm\":0.5}],\"expected_dof\":2,\"assembly_notes\":[\"J2 and arm2 inherit J1 motion; nominal generated geometry represents both joints at zero degrees\"]}}"
+    },
+    {
+      "id": "gen_two_joint_arm_bad",
+      "match": {
+        "role": "generator",
+        "object_type": "two_joint_arm_demo",
+        "iteration_max": 1
+      },
+      "response": "$fn=48;\nmodule base(){ union(){ translate([-10,-10,0]) cube([20,20,3]); translate([0,0,2.5]) cylinder(h=5.5,r=2.5); } }\nmodule arm1(){ translate([0,-4,2.5]) cube([30,8,3]); }\nmodule arm2(){ translate([30,-4,10]) cube([30,8,3]); }\nbase(); arm1(); arm2();\n"
+    },
+    {
+      "id": "gen_two_joint_arm_repair",
+      "match": {
+        "role": "generator",
+        "object_type": "two_joint_arm_demo",
+        "iteration_min": 2,
+        "feedback_contains": [
+          "Expected 3 distinct assembly parts"
+        ]
+      },
+      "response": "$fn=48;\nmodule link_body(x0,x1,z0){\n  hull(){ translate([x0,0,z0]) cylinder(h=3,r=6); translate([x1,0,z0]) cylinder(h=3,r=6); }\n}\nmodule base(){\n  union(){ translate([-10,-10,0]) cube([20,20,3]); translate([0,0,2.5]) cylinder(h=5.5,r=2.5); }\n}\nmodule arm1(){\n  union(){\n    difference(){ link_body(0,30,5); translate([0,0,4.5]) cylinder(h=4.5,r=3); }\n    translate([30,0,7.5]) cylinder(h=5.5,r=2.5);\n  }\n}\nmodule arm2(){\n  difference(){ link_body(30,60,10); translate([30,0,9.5]) cylinder(h=4.5,r=3); }\n}\nbase(); arm1(); arm2();\n"
+    },
+    {
+      "id": "critic_two_joint_arm",
+      "match": {
+        "role": "critic",
+        "object_type": "two_joint_arm_demo"
+      },
+      "response": "{\"pass\":true,\"score\":93,\"feedback\":[]}"
+    },
+    {
+      "id": "plan_motion_collision_demo",
+      "match": {
+        "role": "planner",
+        "prompt_contains": [
+          "motion-collision",
+          "revolute"
+        ]
+      },
+      "response": "{\"object_type\":\"motion_collision_demo\",\"strategies\":[\"multi_body_csg\",\"revolute_joint\"],\"dimensions_mm\":null,\"requirements\":[{\"id\":\"R1\",\"type\":\"mechanical\",\"text\":\"Two distinct printable parts\"},{\"id\":\"R2\",\"type\":\"mechanical\",\"text\":\"Arm sweeps 0 to 90 degrees without hitting base\"}],\"mechanical_system\":{\"parts\":[{\"id\":\"base\",\"role\":\"grounded base\",\"origin_mm\":[0,0,2.5],\"grounded\":true},{\"id\":\"arm\",\"role\":\"swinging arm\",\"origin_mm\":[0,0,10]}],\"joints\":[{\"id\":\"J1\",\"type\":\"revolute\",\"parent\":\"base\",\"child\":\"arm\",\"axis\":[0,1,0],\"origin_mm\":[0,0,10],\"limits\":[0,90],\"clearance_mm\":0.5}],\"expected_dof\":1,\"assembly_notes\":[\"positive rotation must remain collision-free\"]}}"
+    },
+    {
+      "id": "gen_motion_collision_bad",
+      "match": {
+        "role": "generator",
+        "object_type": "motion_collision_demo",
+        "iteration_max": 1
+      },
+      "response": "module base(){translate([-10,-10,0]) cube([20,20,5]);}\nmodule arm(){translate([0,-4,9]) cube([30,8,2]);}\nbase();arm();\n"
+    },
+    {
+      "id": "gen_motion_collision_repair",
+      "match": {
+        "role": "generator",
+        "object_type": "motion_collision_demo",
+        "iteration_min": 2,
+        "feedback_contains": [
+          "Collision at"
+        ]
+      },
+      "response": "module base(){translate([-10,-10,0]) cube([20,20,5]);}\nmodule arm(){translate([-30,-4,9]) cube([30,8,2]);}\nbase();arm();\n"
+    },
+    {
+      "id": "critic_motion_collision_demo",
+      "match": {
+        "role": "critic",
+        "object_type": "motion_collision_demo"
+      },
+      "response": "{\"pass\":true,\"score\":90,\"feedback\":[]}"
+    },
+    {
+      "id": "critic_default_pass",
+      "match": {
+        "role": "critic"
+      },
+      "response": "{\"pass\":true,\"score\":95,\"feedback\":[]}"
+    },
+    {
+      "id": "critic_frog_first",
+      "match": {
+        "role": "critic",
+        "object_type": "frog_teacup",
+        "iteration_max": 1
+      },
+      "response": "{\"pass\":false,\"score\":55,\"feedback\":[\"Wall is too thin: 0.8 mm\",\"Bottom is too thin: 1.0 mm\"]}"
+    },
+    {
+      "id": "critic_f16_components",
+      "match": {
+        "role": "critic",
+        "object_type": "f16",
+        "iteration_max": 1
+      },
+      "response": "{\"pass\":false,\"score\":60,\"feedback\":[\"connected components=3; wings do not intersect fuselage\"]}"
+    },
+    {
+      "id": "gen_compile_error_first",
+      "match": {
+        "role": "generator",
+        "prompt_contains": [
+          "offline compile repair test"
+        ],
+        "iteration_max": 1
+      },
+      "response": "this is not valid openscad !!!\n"
+    },
+    {
+      "id": "gen_compile_error_repair",
+      "match": {
+        "role": "generator",
+        "prompt_contains": [
+          "offline compile repair test"
+        ],
+        "iteration_min": 2,
+        "feedback_contains": [
+          "OpenSCAD STL compile failed"
+        ]
+      },
+      "response": "cube([20,20,20]);\n"
+    },
+    {
+      "id": "gen_always_fail",
+      "match": {
+        "role": "generator",
+        "prompt_contains": [
+          "always fail cad"
+        ]
+      },
+      "response": "this is not valid openscad !!!\n"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+[
+  {"id":"01_cube","difficulty":"easy","prompt":"Generate a 2 cm by 2 cm by 2 cm cube."},
+  {"id":"02_pepper_tag","difficulty":"medium","prompt":"Generate a 6 cm by 2 cm by 2 mm key ring name tag that says Pepper with font size 10. Round the corners, and place a 2 mm hole 2 mm from the upper left."},
+  {"id":"03_frog_teacup","difficulty":"hard","prompt":"Generate a tea cup with a frog in it."},
+  {"id":"04_bishop","difficulty":"harder","prompt":"Generate a bishop chess piece."},
+  {"id":"05_f16","difficulty":"hardest","prompt":"Generate a F-16 model."}
+]

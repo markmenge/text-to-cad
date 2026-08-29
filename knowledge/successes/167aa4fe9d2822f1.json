@@ -1,0 +1,619 @@
+{
+  "id": "167aa4fe9d2822f1",
+  "prompt": "Generate a three-part two-joint serial revolute arm demonstrator with two independent revolute joints.",
+  "object_type": "two_joint_arm_demo",
+  "primary_strategy": "multi_body_csg",
+  "secondary_strategies": [
+    "serial_revolute_joints"
+  ],
+  "subsystems": [
+    "body"
+  ],
+  "final_metrics": {
+    "stl_rc": 0,
+    "render_count": 4,
+    "watertight": true,
+    "components": 3,
+    "faces": 1180,
+    "vertices": 592,
+    "volume_mm3": 4063.276,
+    "bbox_mm": [
+      76.0,
+      20.0,
+      13.0
+    ],
+    "z_min_mm": 0.0,
+    "z_max_mm": 13.0,
+    "render_stddev": [
+      26.166,
+      19.505,
+      14.408,
+      30.666
+    ],
+    "manufacturing": {
+      "pass": true,
+      "profile": {
+        "name": "generic_fdm_0p4",
+        "process": "FDM",
+        "nozzle_mm": 0.4,
+        "layer_height_mm": 0.2,
+        "min_wall_mm": 0.8,
+        "min_feature_mm": 0.4,
+        "xy_clearance_mm": 0.3,
+        "build_volume_mm": [
+          256.0,
+          256.0,
+          256.0
+        ]
+      },
+      "failures": [],
+      "slicer_available": false,
+      "slicer_executable": null,
+      "scope": "manufacturing envelope only; wall-thickness/support validation requires a slicer or dedicated geometry analysis"
+    },
+    "assembly": {
+      "ir": {
+        "pass": true,
+        "failures": [],
+        "failure_codes": [],
+        "estimated_dof": 2,
+        "part_count": 3,
+        "joint_count": 2,
+        "grounded_parts": [
+          "base"
+        ]
+      },
+      "mesh": {
+        "pass": true,
+        "failures": [],
+        "failure_codes": [],
+        "component_count": 3,
+        "expected_component_count": 3,
+        "component_matches": [
+          {
+            "part_id": "base",
+            "component_index": 0,
+            "centroid_mm": [
+              -0.0,
+              -0.0,
+              1.868
+            ],
+            "origin_distance_mm": 1.132
+          },
+          {
+            "part_id": "arm1",
+            "component_index": 1,
+            "centroid_mm": [
+              15.892,
+              0.0,
+              6.813
+            ],
+            "origin_distance_mm": 0.912
+          },
+          {
+            "part_id": "arm2",
+            "component_index": 2,
+            "centroid_mm": [
+              44.999,
+              -0.0,
+              11.5
+            ],
+            "origin_distance_mm": 0.001
+          }
+        ],
+        "exports": [
+          "C:\\Users\\Mark\\AppData\\Local\\Temp\\tmp40jdfg55\\iteration_02\\parts\\base.stl",
+          "C:\\Users\\Mark\\AppData\\Local\\Temp\\tmp40jdfg55\\iteration_02\\parts\\arm1.stl",
+          "C:\\Users\\Mark\\AppData\\Local\\Temp\\tmp40jdfg55\\iteration_02\\parts\\arm2.stl"
+        ]
+      }
+    },
+    "motion_validation": {
+      "pass": true,
+      "failure_codes": [],
+      "failures": [],
+      "sample_count": 9,
+      "collision_count": 0,
+      "minimum_pair_clearance_mm": {
+        "base|arm1": 0.4989,
+        "base|arm2": 12.0904,
+        "arm1|arm2": 0.4989
+      },
+      "configurations": [
+        {
+          "configuration_id": "cfg_000",
+          "joint_values": {
+            "J1": -45.0,
+            "J2": -90.0
+          },
+          "pairs": [
+            {
+              "parts": [
+                "base",
+                "arm1"
+              ],
+              "collision": false,
+              "approx_clearance_mm": 0.4989,
+              "required_clearance_mm": 0.5,
+              "clearance_fail": false,
+              "exact": {
+                "returncode": 1,
+                "empty": true,
+                "evidence": [],
+                "stderr_tail": "Geometries in cache: 4\nGeometry cache size in bytes: 114080\nCGAL Polyhedrons in cache: 1\nCGAL cache size in bytes: 0\nTotal rendering time: 0:00:00.565\nCurrent top level object is empty.\n"
+              }
+            },
+            {
+              "parts": [
+                "base",
+                "arm2"
+              ],
+              "collision": false,
+              "approx_clearance_mm": 12.0904,
+              "required_clearance_mm": null,
+              "clearance_fail": false,
+              "exact": {
+                "skipped_by_aabb": true
+              }
+            },
+            {
+              "parts": [
+                "arm1",
+                "arm2"
+              ],
+              "collision": false,
+              "approx_clearance_mm": 0.4989,
+              "required_clearance_mm": 0.5,
+              "clearance_fail": false,
+              "exact": {
+                "returncode": 1,
+                "empty": true,
+                "evidence": [],
+                "stderr_tail": "Geometries in cache: 4\nGeometry cache size in bytes: 141152\nCGAL Polyhedrons in cache: 1\nCGAL cache size in bytes: 0\nTotal rendering time: 0:00:00.656\nCurrent top level object is empty.\n"
+              }
+            }
+          ]
+        },
+        {
+          "configuration_id": "cfg_001",
+          "joint_values": {
+            "J1": -45.0,
+            "J2": 0.0
+          },
+          "pairs": [
+            {
+              "parts": [
+                "base",
+                "arm1"
+              ],
+              "collision": false,
+              "approx_clearance_mm": 0.4989,
+              "required_clearance_mm": 0.5,
+              "clearance_fail": false,
+              "exact": {
+                "returncode": 1,
+                "empty": true,
+                "evidence": [],
+                "stderr_tail": "Geometries in cache: 4\nGeometry cache size in bytes: 114080\nCGAL Polyhedrons in cache: 1\nCGAL cache size in bytes: 0\nTotal rendering time: 0:00:00.531\nCurrent top level object is empty.\n"
+              }
+            },
+            {
+              "parts": [
+                "base",
+                "arm2"
+              ],
+              "collision": false,
+              "approx_clearance_mm": 12.0904,
+              "required_clearance_mm": null,
+              "clearance_fail": false,
+              "exact": {
+                "skipped_by_aabb": true
+              }
+            },
+            {
+              "parts": [
+                "arm1",
+                "arm2"
+              ],
+              "collision": false,
+              "approx_clearance_mm": 0.4989,
+              "required_clearance_mm": 0.5,
+              "clearance_fail": false,
+              "exact": {
+                "returncode": 1,
+                "empty": true,
+                "evidence": [],
+                "stderr_tail": "Geometries in cache: 4\nGeometry cache size in bytes: 141152\nCGAL Polyhedrons in cache: 1\nCGAL cache size in bytes: 0\nTotal rendering time: 0:00:00.621\nCurrent top level object is empty.\n"
+              }
+            }
+          ]
+        },
+        {
+          "configuration_id": "cfg_002",
+          "joint_values": {
+            "J1": -45.0,
+            "J2": 90.0
+          },
+          "pairs": [
+            {
+              "parts": [
+                "base",
+                "arm1"
+              ],
+              "collision": false,
+              "approx_clearance_mm": 0.4989,
+              "required_clearance_mm": 0.5,
+              "clearance_fail": false,
+              "exact": {
+                "returncode": 1,
+                "empty": true,
+                "evidence": [],
+                "stderr_tail": "Geometries in cache: 4\nGeometry cache size in bytes: 114080\nCGAL Polyhedrons in cache: 1\nCGAL cache size in bytes: 0\nTotal rendering time: 0:00:00.552\nCurrent top level object is empty.\n"
+              }
+            },
+            {
+              "parts": [
+                "base",
+                "arm2"
+              ],
+              "collision": false,
+              "approx_clearance_mm": 12.0904,
+              "required_clearance_mm": null,
+              "clearance_fail": false,
+              "exact": {
+                "skipped_by_aabb": true
+              }
+            },
+            {
+              "parts": [
+                "arm1",
+                "arm2"
+              ],
+              "collision": false,
+              "approx_clearance_mm": 0.4989,
+              "required_clearance_mm": 0.5,
+              "clearance_fail": false,
+              "exact": {
+                "returncode": 1,
+                "empty": true,
+                "evidence": [],
+                "stderr_tail": "Geometries in cache: 4\nGeometry cache size in bytes: 141152\nCGAL Polyhedrons in cache: 1\nCGAL cache size in bytes: 0\nTotal rendering time: 0:00:00.640\nCurrent top level object is empty.\n"
+              }
+            }
+          ]
+        },
+        {
+          "configuration_id": "cfg_003",
+          "joint_values": {
+            "J1": 0.0,
+            "J2": -90.0
+          },
+          "pairs": [
+            {
+              "parts": [
+                "base",
+                "arm1"
+              ],
+              "collision": false,
+              "approx_clearance_mm": 0.4989,
+              "required_clearance_mm": 0.5,
+              "clearance_fail": false,
+              "exact": {
+                "returncode": 1,
+                "empty": true,
+                "evidence": [],
+                "stderr_tail": "Geometries in cache: 4\nGeometry cache size in bytes: 114080\nCGAL Polyhedrons in cache: 1\nCGAL cache size in bytes: 0\nTotal rendering time: 0:00:00.546\nCurrent top level object is empty.\n"
+              }
+            },
+            {
+              "parts": [
+                "base",
+                "arm2"
+              ],
+              "collision": false,
+              "approx_clearance_mm": 15.6525,
+              "required_clearance_mm": null,
+              "clearance_fail": false,
+              "exact": {
+                "skipped_by_aabb": true
+              }
+            },
+            {
+              "parts": [
+                "arm1",
+                "arm2"
+              ],
+              "collision": false,
+              "approx_clearance_mm": 0.4989,
+              "required_clearance_mm": 0.5,
+              "clearance_fail": false,
+              "exact": {
+                "returncode": 1,
+                "empty": true,
+                "evidence": [],
+                "stderr_tail": "Geometries in cache: 4\nGeometry cache size in bytes: 141152\nCGAL Polyhedrons in cache: 1\nCGAL cache size in bytes: 0\nTotal rendering time: 0:00:00.641\nCurrent top level object is empty.\n"
+              }
+            }
+          ]
+        },
+        {
+          "configuration_id": "cfg_004",
+          "joint_values": {
+            "J1": 0.0,
+            "J2": 0.0
+          },
+          "pairs": [
+            {
+              "parts": [
+                "base",
+                "arm1"
+              ],
+              "collision": false,
+              "approx_clearance_mm": 0.4989,
+              "required_clearance_mm": 0.5,
+              "clearance_fail": false,
+              "exact": {
+                "returncode": 1,
+                "empty": true,
+                "evidence": [],
+                "stderr_tail": "Geometries in cache: 4\nGeometry cache size in bytes: 114080\nCGAL Polyhedrons in cache: 1\nCGAL cache size in bytes: 0\nTotal rendering time: 0:00:00.531\nCurrent top level object is empty.\n"
+              }
+            },
+            {
+              "parts": [
+                "base",
+                "arm2"
+              ],
+              "collision": false,
+              "approx_clearance_mm": 15.6525,
+              "required_clearance_mm": null,
+              "clearance_fail": false,
+              "exact": {
+                "skipped_by_aabb": true
+              }
+            },
+            {
+              "parts": [
+                "arm1",
+                "arm2"
+              ],
+              "collision": false,
+              "approx_clearance_mm": 0.4989,
+              "required_clearance_mm": 0.5,
+              "clearance_fail": false,
+              "exact": {
+                "returncode": 1,
+                "empty": true,
+                "evidence": [],
+                "stderr_tail": "Geometries in cache: 4\nGeometry cache size in bytes: 141152\nCGAL Polyhedrons in cache: 1\nCGAL cache size in bytes: 0\nTotal rendering time: 0:00:00.653\nCurrent top level object is empty.\n"
+              }
+            }
+          ]
+        },
+        {
+          "configuration_id": "cfg_005",
+          "joint_values": {
+            "J1": 0.0,
+            "J2": 90.0
+          },
+          "pairs": [
+            {
+              "parts": [
+                "base",
+                "arm1"
+              ],
+              "collision": false,
+              "approx_clearance_mm": 0.4989,
+              "required_clearance_mm": 0.5,
+              "clearance_fail": false,
+              "exact": {
+                "returncode": 1,
+                "empty": true,
+                "evidence": [],
+                "stderr_tail": "Geometries in cache: 4\nGeometry cache size in bytes: 114080\nCGAL Polyhedrons in cache: 1\nCGAL cache size in bytes: 0\nTotal rendering time: 0:00:00.531\nCurrent top level object is empty.\n"
+              }
+            },
+            {
+              "parts": [
+                "base",
+                "arm2"
+              ],
+              "collision": false,
+              "approx_clearance_mm": 15.6525,
+              "required_clearance_mm": null,
+              "clearance_fail": false,
+              "exact": {
+                "skipped_by_aabb": true
+              }
+            },
+            {
+              "parts": [
+                "arm1",
+                "arm2"
+              ],
+              "collision": false,
+              "approx_clearance_mm": 0.4989,
+              "required_clearance_mm": 0.5,
+              "clearance_fail": false,
+              "exact": {
+                "returncode": 1,
+                "empty": true,
+                "evidence": [],
+                "stderr_tail": "Geometries in cache: 4\nGeometry cache size in bytes: 141152\nCGAL Polyhedrons in cache: 1\nCGAL cache size in bytes: 0\nTotal rendering time: 0:00:00.643\nCurrent top level object is empty.\n"
+              }
+            }
+          ]
+        },
+        {
+          "configuration_id": "cfg_006",
+          "joint_values": {
+            "J1": 45.0,
+            "J2": -90.0
+          },
+          "pairs": [
+            {
+              "parts": [
+                "base",
+                "arm1"
+              ],
+              "collision": false,
+              "approx_clearance_mm": 0.4989,
+              "required_clearance_mm": 0.5,
+              "clearance_fail": false,
+              "exact": {
+                "returncode": 1,
+                "empty": true,
+                "evidence": [],
+                "stderr_tail": "Geometries in cache: 4\nGeometry cache size in bytes: 114080\nCGAL Polyhedrons in cache: 1\nCGAL cache size in bytes: 0\nTotal rendering time: 0:00:00.515\nCurrent top level object is empty.\n"
+              }
+            },
+            {
+              "parts": [
+                "base",
+                "arm2"
+              ],
+              "collision": false,
+              "approx_clearance_mm": 12.0904,
+              "required_clearance_mm": null,
+              "clearance_fail": false,
+              "exact": {
+                "skipped_by_aabb": true
+              }
+            },
+            {
+              "parts": [
+                "arm1",
+                "arm2"
+              ],
+              "collision": false,
+              "approx_clearance_mm": 0.4989,
+              "required_clearance_mm": 0.5,
+              "clearance_fail": false,
+              "exact": {
+                "returncode": 1,
+                "empty": true,
+                "evidence": [],
+                "stderr_tail": "Geometries in cache: 4\nGeometry cache size in bytes: 141152\nCGAL Polyhedrons in cache: 1\nCGAL cache size in bytes: 0\nTotal rendering time: 0:00:00.636\nCurrent top level object is empty.\n"
+              }
+            }
+          ]
+        },
+        {
+          "configuration_id": "cfg_007",
+          "joint_values": {
+            "J1": 45.0,
+            "J2": 0.0
+          },
+          "pairs": [
+            {
+              "parts": [
+                "base",
+                "arm1"
+              ],
+              "collision": false,
+              "approx_clearance_mm": 0.4989,
+              "required_clearance_mm": 0.5,
+              "clearance_fail": false,
+              "exact": {
+                "returncode": 1,
+                "empty": true,
+                "evidence": [],
+                "stderr_tail": "Geometries in cache: 4\nGeometry cache size in bytes: 114080\nCGAL Polyhedrons in cache: 1\nCGAL cache size in bytes: 0\nTotal rendering time: 0:00:00.546\nCurrent top level object is empty.\n"
+              }
+            },
+            {
+              "parts": [
+                "base",
+                "arm2"
+              ],
+              "collision": false,
+              "approx_clearance_mm": 12.0904,
+              "required_clearance_mm": null,
+              "clearance_fail": false,
+              "exact": {
+                "skipped_by_aabb": true
+              }
+            },
+            {
+              "parts": [
+                "arm1",
+                "arm2"
+              ],
+              "collision": false,
+              "approx_clearance_mm": 0.4989,
+              "required_clearance_mm": 0.5,
+              "clearance_fail": false,
+              "exact": {
+                "returncode": 1,
+                "empty": true,
+                "evidence": [],
+                "stderr_tail": "Geometries in cache: 4\nGeometry cache size in bytes: 141152\nCGAL Polyhedrons in cache: 1\nCGAL cache size in bytes: 0\nTotal rendering time: 0:00:00.637\nCurrent top level object is empty.\n"
+              }
+            }
+          ]
+        },
+        {
+          "configuration_id": "cfg_008",
+          "joint_values": {
+            "J1": 45.0,
+            "J2": 90.0
+          },
+          "pairs": [
+            {
+              "parts": [
+                "base",
+                "arm1"
+              ],
+              "collision": false,
+              "approx_clearance_mm": 0.4989,
+              "required_clearance_mm": 0.5,
+              "clearance_fail": false,
+              "exact": {
+                "returncode": 1,
+                "empty": true,
+                "evidence": [],
+                "stderr_tail": "Geometries in cache: 4\nGeometry cache size in bytes: 114080\nCGAL Polyhedrons in cache: 1\nCGAL cache size in bytes: 0\nTotal rendering time: 0:00:00.515\nCurrent top level object is empty.\n"
+              }
+            },
+            {
+              "parts": [
+                "base",
+                "arm2"
+              ],
+              "collision": false,
+              "approx_clearance_mm": 12.0904,
+              "required_clearance_mm": null,
+              "clearance_fail": false,
+              "exact": {
+                "skipped_by_aabb": true
+              }
+            },
+            {
+              "parts": [
+                "arm1",
+                "arm2"
+              ],
+              "collision": false,
+              "approx_clearance_mm": 0.4989,
+              "required_clearance_mm": 0.5,
+              "clearance_fail": false,
+              "exact": {
+                "returncode": 1,
+                "empty": true,
+                "evidence": [],
+                "stderr_tail": "Geometries in cache: 4\nGeometry cache size in bytes: 141152\nCGAL Polyhedrons in cache: 1\nCGAL cache size in bytes: 0\nTotal rendering time: 0:00:00.674\nCurrent top level object is empty.\n"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "iterations": 2,
+  "retrieved_patterns": [
+    "D:\\Proj\\python\\text-to-cad\\knowledge\\successes\\2f4b807f4d109f93.md",
+    "D:\\Proj\\python\\text-to-cad\\knowledge\\successes\\633ddc1b24b558ee.md",
+    "D:\\Proj\\python\\text-to-cad\\knowledge\\successes\\756b73aa3ea24bfc.md"
+  ],
+  "pipeline_version": "4.1.0-dev2"
+}

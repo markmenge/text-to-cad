@@ -1,0 +1,192 @@
+{
+  "id": "9f22d1c6c2916c62",
+  "prompt": "Generate a two-part hinged mechanism demonstrator with one revolute joint from 0 to 110 degrees.",
+  "object_type": "hinged_demo",
+  "primary_strategy": "multi_body_csg",
+  "secondary_strategies": [
+    "revolute_joint"
+  ],
+  "subsystems": [
+    "body"
+  ],
+  "final_metrics": {
+    "stl_rc": 0,
+    "render_count": 4,
+    "watertight": true,
+    "components": 2,
+    "faces": 852,
+    "vertices": 426,
+    "volume_mm3": 12075.312,
+    "bbox_mm": [
+      40.0,
+      33.0,
+      15.5
+    ],
+    "z_min_mm": 0.0,
+    "z_max_mm": 15.5,
+    "render_stddev": [
+      42.374,
+      32.149,
+      25.711,
+      43.12
+    ],
+    "manufacturing": {
+      "pass": true,
+      "profile": {
+        "name": "generic_fdm_0p4",
+        "process": "FDM",
+        "nozzle_mm": 0.4,
+        "layer_height_mm": 0.2,
+        "min_wall_mm": 0.8,
+        "min_feature_mm": 0.4,
+        "xy_clearance_mm": 0.3,
+        "build_volume_mm": [
+          256.0,
+          256.0,
+          256.0
+        ]
+      },
+      "failures": [],
+      "slicer_available": false,
+      "slicer_executable": null,
+      "scope": "manufacturing envelope only; wall-thickness/support validation requires a slicer or dedicated geometry analysis"
+    },
+    "assembly": {
+      "ir": {
+        "pass": true,
+        "failures": [],
+        "failure_codes": [],
+        "estimated_dof": 1,
+        "part_count": 2,
+        "joint_count": 1,
+        "grounded_parts": [
+          "base"
+        ]
+      },
+      "mesh": {
+        "pass": true,
+        "failures": [],
+        "failure_codes": [],
+        "component_count": 2,
+        "expected_component_count": 2,
+        "component_matches": [
+          {
+            "part_id": "base",
+            "component_index": 0,
+            "centroid_mm": [
+              -0.0,
+              0.197,
+              5.016
+            ],
+            "origin_distance_mm": 0.198
+          },
+          {
+            "part_id": "lid",
+            "component_index": 1,
+            "centroid_mm": [
+              -0.0,
+              3.468,
+              12.306
+            ],
+            "origin_distance_mm": 3.481
+          }
+        ],
+        "exports": [
+          "C:\\Users\\Mark\\AppData\\Local\\Temp\\tmp2ldkasbu\\iteration_02\\parts\\base.stl",
+          "C:\\Users\\Mark\\AppData\\Local\\Temp\\tmp2ldkasbu\\iteration_02\\parts\\lid.stl"
+        ]
+      }
+    },
+    "motion_validation": {
+      "pass": true,
+      "failure_codes": [],
+      "failures": [],
+      "sample_count": 3,
+      "collision_count": 0,
+      "minimum_pair_clearance_mm": {
+        "base|lid": 0.4999
+      },
+      "configurations": [
+        {
+          "configuration_id": "cfg_000",
+          "joint_values": {
+            "J1": 0.0
+          },
+          "pairs": [
+            {
+              "parts": [
+                "base",
+                "lid"
+              ],
+              "collision": false,
+              "approx_clearance_mm": 0.4999,
+              "required_clearance_mm": 0.4,
+              "clearance_fail": false,
+              "exact": {
+                "returncode": 1,
+                "empty": true,
+                "evidence": [],
+                "stderr_tail": "Geometries in cache: 4\nGeometry cache size in bytes: 123296\nCGAL Polyhedrons in cache: 1\nCGAL cache size in bytes: 0\nTotal rendering time: 0:00:00.978\nCurrent top level object is empty.\n"
+              }
+            }
+          ]
+        },
+        {
+          "configuration_id": "cfg_001",
+          "joint_values": {
+            "J1": 55.0
+          },
+          "pairs": [
+            {
+              "parts": [
+                "base",
+                "lid"
+              ],
+              "collision": false,
+              "approx_clearance_mm": 0.5018,
+              "required_clearance_mm": 0.4,
+              "clearance_fail": false,
+              "exact": {
+                "returncode": 1,
+                "empty": true,
+                "evidence": [],
+                "stderr_tail": "Geometries in cache: 4\nGeometry cache size in bytes: 123296\nCGAL Polyhedrons in cache: 1\nCGAL cache size in bytes: 0\nTotal rendering time: 0:00:00.678\nCurrent top level object is empty.\n"
+              }
+            }
+          ]
+        },
+        {
+          "configuration_id": "cfg_002",
+          "joint_values": {
+            "J1": 110.0
+          },
+          "pairs": [
+            {
+              "parts": [
+                "base",
+                "lid"
+              ],
+              "collision": false,
+              "approx_clearance_mm": 0.5029,
+              "required_clearance_mm": 0.4,
+              "clearance_fail": false,
+              "exact": {
+                "returncode": 1,
+                "empty": true,
+                "evidence": [],
+                "stderr_tail": "Geometries in cache: 4\nGeometry cache size in bytes: 123296\nCGAL Polyhedrons in cache: 1\nCGAL cache size in bytes: 0\nTotal rendering time: 0:00:00.629\nCurrent top level object is empty.\n"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "iterations": 2,
+  "retrieved_patterns": [
+    "D:\\Proj\\python\\text-to-cad\\knowledge\\successes\\43fd11c341509433.md",
+    "D:\\Proj\\python\\text-to-cad\\knowledge\\successes\\68f5715f5696d911.md",
+    "D:\\Proj\\python\\text-to-cad\\knowledge\\successes\\ce4da80b6dad3d4a.md"
+  ],
+  "pipeline_version": "4.1.0-dev2"
+}

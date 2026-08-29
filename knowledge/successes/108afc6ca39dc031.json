@@ -1,0 +1,65 @@
+{
+  "id": "108afc6ca39dc031",
+  "prompt": "Generate a 2 cm by 2 cm by 2 cm cube.",
+  "object_type": "cube",
+  "primary_strategy": "primitive_csg",
+  "secondary_strategies": [],
+  "subsystems": [
+    "body"
+  ],
+  "final_metrics": {
+    "stl_rc": 0,
+    "render_count": 4,
+    "watertight": true,
+    "components": 1,
+    "faces": 12,
+    "vertices": 8,
+    "volume_mm3": 8000.0,
+    "bbox_mm": [
+      20.0,
+      20.0,
+      20.0
+    ],
+    "z_min_mm": 0.0,
+    "z_max_mm": 20.0,
+    "dimension_error_mm": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "render_stddev": [
+      56.362,
+      40.196,
+      40.196,
+      40.196
+    ],
+    "manufacturing": {
+      "pass": true,
+      "profile": {
+        "name": "generic_fdm_0p4",
+        "process": "FDM",
+        "nozzle_mm": 0.4,
+        "layer_height_mm": 0.2,
+        "min_wall_mm": 0.8,
+        "min_feature_mm": 0.4,
+        "xy_clearance_mm": 0.3,
+        "build_volume_mm": [
+          256.0,
+          256.0,
+          256.0
+        ]
+      },
+      "failures": [],
+      "slicer_available": false,
+      "slicer_executable": null,
+      "scope": "manufacturing envelope only; wall-thickness/support validation requires a slicer or dedicated geometry analysis"
+    }
+  },
+  "iterations": 1,
+  "retrieved_patterns": [
+    "/mnt/data/text_to_cad_v4/knowledge/successes/3d343927875a6ccd.md",
+    "/mnt/data/text_to_cad_v4/knowledge/successes/7ec06913050bb5e1.md",
+    "/mnt/data/text_to_cad_v4/knowledge/successes/bb5af76035b10af1.md"
+  ],
+  "pipeline_version": "4.0.0-dev1"
+}

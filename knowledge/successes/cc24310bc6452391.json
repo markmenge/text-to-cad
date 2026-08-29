@@ -1,0 +1,86 @@
+{
+  "id": "cc24310bc6452391",
+  "prompt": "Generate a tea cup with a frog in it.",
+  "object_type": "frog_teacup",
+  "primary_strategy": "shell",
+  "secondary_strategies": [
+    "organic_hull"
+  ],
+  "subsystems": [
+    "cup_shell",
+    "handle",
+    "frog_body",
+    "frog_head",
+    "frog_limbs"
+  ],
+  "final_metrics": {
+    "stl_rc": 0,
+    "render_count": 4,
+    "watertight": true,
+    "components": 1,
+    "faces": 18390,
+    "vertices": 9193,
+    "volume_mm3": 34951.215,
+    "bbox_mm": [
+      72.0,
+      56.0,
+      57.196
+    ],
+    "z_min_mm": 0.0,
+    "z_max_mm": 57.196,
+    "render_stddev": [
+      61.345,
+      45.282,
+      45.039,
+      43.739
+    ],
+    "manufacturing": {
+      "pass": true,
+      "profile": {
+        "name": "generic_fdm_0p4",
+        "process": "FDM",
+        "nozzle_mm": 0.4,
+        "layer_height_mm": 0.2,
+        "min_wall_mm": 0.8,
+        "min_feature_mm": 0.4,
+        "xy_clearance_mm": 0.3,
+        "build_volume_mm": [
+          256.0,
+          256.0,
+          256.0
+        ]
+      },
+      "failures": [],
+      "slicer_available": false,
+      "slicer_executable": null,
+      "scope": "manufacturing envelope only; wall-thickness/support validation requires a slicer or dedicated geometry analysis"
+    },
+    "assembly": {
+      "ir": {
+        "pass": true,
+        "failures": [],
+        "failure_codes": [],
+        "estimated_dof": 0
+      },
+      "mesh": {
+        "pass": true,
+        "failures": [],
+        "failure_codes": [],
+        "exports": []
+      }
+    },
+    "motion_validation": {
+      "pass": true,
+      "failure_codes": [],
+      "failures": [],
+      "configurations": [],
+      "collision_count": 0
+    }
+  },
+  "iterations": 2,
+  "retrieved_patterns": [
+    "/mnt/data/text_to_cad_v4/knowledge/successes/44fbc0e3364a59ef.md",
+    "/mnt/data/text_to_cad_v4/knowledge/successes/60ec52347a97f36b.md"
+  ],
+  "pipeline_version": "4.1.0-dev2"
+}
