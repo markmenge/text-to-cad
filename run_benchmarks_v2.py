@@ -14,7 +14,7 @@ from pipeline_v2 import run_one
 
 def main():
     parser = argparse.ArgumentParser(description="Run the Text-to-CAD v2 benchmark suite.")
-    parser.add_argument("--llm", choices=["mock", "replay", "openai"], default="mock")
+    parser.add_argument("--llm", choices=["mock", "replay", "openai", "live"], default="mock")
     parser.add_argument("--max-iterations", type=int, default=3)
     parser.add_argument("--cassette", type=Path)
     parser.add_argument("--only", help="Run one benchmark id, e.g. 03_frog_teacup")

@@ -537,7 +537,7 @@ def create_llm(mode: str, root: Path, cassette: Path | None = None) -> LLMClient
         if not cassette:
             raise ValueError("Replay mode requires cassette path")
         return ReplayClient(cassette, prompt_dir)
-    if mode == "openai":
+    if mode in {"openai", "live"}:
         return OpenAIClient(prompt_dir, cassette_path=cassette)
     raise ValueError(f"Unknown LLM mode: {mode}")
 

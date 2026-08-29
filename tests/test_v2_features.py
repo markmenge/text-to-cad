@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 
 from llm_client import LLMRequest, MockOpenAIClient, ReplayClient, _request_key
-from pipeline_v2 import run_one
+from pipeline_v2 import create_llm, run_one
 
 # pip install instructions:
 # py -m pip install trimesh pillow numpy
@@ -16,6 +16,10 @@ CUBE = "Generate a 2 cm by 2 cm by 2 cm cube."
 
 
 class V2FeatureTests(unittest.TestCase):
+    def test_live_mode_alias_uses_openai_client(self):
+        client = create_llm("live", ROOT)
+        self.assertEqual(type(client).__name__, "OpenAIClient")
+
     def test_run_bundle_contains_observability_artifacts(self):
         with tempfile.TemporaryDirectory() as td:
             out = Path(td)
