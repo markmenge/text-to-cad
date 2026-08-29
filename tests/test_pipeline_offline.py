@@ -2,15 +2,24 @@
 
 import tempfile
 import unittest
+import trimesh
 from pathlib import Path
 
-from pipeline_v2 import run_one
+from pipeline_v2 import _solid_component_count, run_one
 
 # pip install instructions:
 # py -m pip install trimesh pillow numpy
 
 
 class OfflinePipelineTests(unittest.TestCase):
+    def test_enclosed_cavity_is_not_counted_as_separate_solid(self):
+        outer = trimesh.creation.box(extents=[20, 20, 20])
+        inner = trimesh.creation.box(extents=[10, 10, 10])
+        inner.apply_translation([0, 0, 0])
+        inner.invert()
+        hollow = trimesh.util.concatenate([outer, inner])
+        self.assertEqual(_solid_component_count(hollow), 1)
+
     def test_cube_one_iteration(self):
         with tempfile.TemporaryDirectory() as td:
             report = run_one("Generate a 2 cm by 2 cm by 2 cm cube.", Path(td), "mock")

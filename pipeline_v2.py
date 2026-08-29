@@ -201,6 +201,24 @@ class OpenSCADCompiler:
         )
 
 
+def _solid_component_count(mesh: trimesh.Trimesh, tolerance: float = 1e-6) -> int:
+    """Count disconnected solid bodies while treating enclosed negative shells as cavities."""
+    components = list(mesh.split(only_watertight=False))
+    positive = [component for component in components if float(component.volume) > tolerance]
+    if not positive:
+        return len(components)
+    solid_count = len(positive)
+    for cavity in (component for component in components if float(component.volume) < -tolerance):
+        inside = any(
+            np.all(cavity.centroid >= outer.bounds[0] - tolerance)
+            and np.all(cavity.centroid <= outer.bounds[1] + tolerance)
+            for outer in positive
+        )
+        if not inside:
+            solid_count += 1
+    return solid_count
+
+
 class DeterministicValidator:
     def validate(self, brief: Brief, build: BuildResult):
         reasons: list[str] = []
@@ -221,7 +239,7 @@ class DeterministicValidator:
             return False, reasons, list(dict.fromkeys(codes)), metrics, self._requirement_results(brief, False, codes)
 
         mesh = trimesh.load_mesh(stl, process=True)
-        components = len(mesh.split(only_watertight=False))
+        components = _solid_component_count(mesh)
         metrics.update(
             watertight=bool(mesh.is_watertight), components=components, faces=int(len(mesh.faces)),
             vertices=int(len(mesh.vertices)), volume_mm3=round(float(abs(mesh.volume)), 3),
