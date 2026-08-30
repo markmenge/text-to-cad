@@ -14,7 +14,7 @@ The project is ready for a first private GitHub release. The current development
 - [x] Clean clone in `D:\Proj\Python\text-to-cad-clean-clone` installed requirements and passed 31/31 tests.
 - [x] Generated runs, Python caches, local environments, and secrets are ignored.
 - [x] Add a recorded live cassette for a representative prompt without committing credentials.
-- [ ] Add a release tag after the first clean clone/install/test on another machine.
+- [x] Add a release tag after the first clean clone/install/test on another machine.
 - [ ] Add slicer-backed wall/support/material validation before claiming print-ready output.
 
 ## Verified baseline
