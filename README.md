@@ -12,7 +12,7 @@ Human request -> knowledge retrieval -> planner -> engineering IR -> mechanical 
 
 V4 now validates mechanisms through sampled motion, not only at their nominal pose. It supports fixed, revolute, and prismatic joints, serial transform propagation, Cartesian sampling of multi-joint configurations, exact OpenSCAD interference tests on exported meshes, moving-clearance diagnostics, collision witness artifacts, and motion-specific repair routing.
 
-The expanded offline benchmark is 9/9 passing, the current offline regression suite is 31/31 passing, and the four-bar case passes through explicit part exports and closed-loop motion validation with real OpenSCAD 2021.01.
+The original expanded offline benchmark is 9/9 passing, the separate four-bar case passes through explicit part exports and closed-loop motion validation, and the current offline regression suite is 31/31 passing with real OpenSCAD 2021.01.
 
 See `V4_MILESTONE_2_REPORT.md` for details and limitations.
 
