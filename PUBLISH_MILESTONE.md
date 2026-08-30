@@ -11,6 +11,7 @@ The project is ready for a first private GitHub release. The current development
 - [x] README documents prerequisites, offline execution, live execution, examples, and limitations.
 - [x] A live-generated king example is included as a visual reference.
 - [x] Offline regression suite passes with real OpenSCAD.
+- [x] Clean clone in `D:\Proj\Python\text-to-cad-clean-clone` installed requirements and passed 31/31 tests.
 - [x] Generated runs, Python caches, local environments, and secrets are ignored.
 - [x] Add a recorded live cassette for a representative prompt without committing credentials.
 - [ ] Add a release tag after the first clean clone/install/test on another machine.
